@@ -39,8 +39,10 @@ public class MazeMaker5 {
 	solutionPath = new LinkedList<Coord> ();
 
         // Recursively find the path and fill in coord's into the list.
-	recursivelyFindPath (maze, start, end);
-
+	int count = 0;
+	recursivelyFindPath (maze, start, end, count);
+	System.out.println(count);
+	
         // The start node gets added last. Why?
         solutionPath.addFirst (start);
 
@@ -49,7 +51,7 @@ public class MazeMaker5 {
     }
 
 
-    static boolean recursivelyFindPath (Maze maze, Coord c, Coord end)
+    static boolean recursivelyFindPath (Maze maze, Coord c, Coord end, int count)
     {
         // If we've reached the end, we're done.
 	if ( (c.row == end.row) && (c.col == end.col) ) {
@@ -60,7 +62,8 @@ public class MazeMaker5 {
 	Coord[] validNeighbors = maze.getUnvisitedOpenNeighbors (c);
 	if (validNeighbors == null) {
             // If we couldn't find any neighbors to explore, we're stuck.
-	    return false;
+	    	count++;
+		return false;
 	}
 
         // Try each neighbor, as many as needed.
@@ -69,7 +72,7 @@ public class MazeMaker5 {
 
             // Try neighbor i.
 	    maze.markVisited (validNeighbors[i]);
-	    boolean found = recursivelyFindPath (maze, validNeighbors[i], end);
+	    boolean found = recursivelyFindPath (maze, validNeighbors[i], end, count);
 
 	    if (found) {
                 // Notice that we add this to the front of the list, and only
